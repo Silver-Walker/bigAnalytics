@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detailed Events Calendar</title>
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      padding-top: 100px; /* Space for fixed navbar */
+    }
+
+    /* ===================
+       NAVIGATION BAR
+    =================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 19, 32, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .social-bar {
+      background: rgba(11, 19, 32, 0.98);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .social-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 20px;
+      gap: 10px;
+    }
+
+    .follow-text {
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-right: 5px;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .logo {
+      height: auto; /* Allow logo to determine its own height */
+      width: auto;
+    }
+
+    .logo img {
+      height: auto; /* Let navbar-logo class control the height */
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* Navbar logo styling */
+    .navbar-logo {
+      height: 80px; /* Adjustable height - change this value to resize */
+      width: auto;
+      object-fit: contain;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-menu li {
+      position: relative;
+    }
+
+    .nav-menu a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      padding: 10px 0;
+    }
+
+    .nav-menu a:hover {
+      color: #f9b233;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: rgba(11, 19, 32, 0.98);
+      min-width: 180px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown li {
+      width: 100%;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown li:last-child a {
+      border-bottom: none;
+    }
+
+    .dropdown a:hover {
+      background: rgba(249, 178, 51, 0.1);
+      color: #f9b233;
+    }
+
+    .projects:hover .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .projects a i {
+      transition: transform 0.3s ease;
+      font-size: 0.8rem;
+      margin-left: 5px;
+    }
+
+    .projects:hover a i {
+      transform: rotate(180deg);
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .social-icons a {
+      color: #fff;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      padding: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .social-icons a:hover {
+      color: #f9b233;
+      background: rgba(249, 178, 51, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .nav-menu {
+        gap: 20px;
+      }
+      
+      .nav-menu a {
+        font-size: 0.9rem;
+      }
+      
+      .social-icons {
+        gap: 10px;
+      }
+      
+      .social-icons a {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+    }
+
+    /* ====== Section Header with Photo Background ====== */
+    .section-header {
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('images/calendar-logo.jpg') center/cover no-repeat;
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    /* Darkening overlay - easily adjustable */
+    .section-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3); /* Adjust this value: 0.1 = light, 0.8 = very dark */
+      z-index: 1;
+    }
+    
+    .section-header > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+      letter-spacing: 1px;
+    }
+
+    .section-header::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #f9b233, #ff6b35);
+      margin: 20px auto 0;
+      border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(249, 178, 51, 0.3);
+    }
+
+    .header-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100px;
+      height: 100px;
+      opacity: 0.9;
+    }
+
+    .header-icon.left {
+      left: 15%;
+    }
+
+    .header-icon.right {
+      right: 15%;
+    }
+
+    /* ====== Main Calendar Layout ====== */
+    .calendar-container {
+      display: flex;
+      gap: 30px;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* Calendar Section */
+    .calendar {
+      flex: 1;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .calendar-header button {
+      background: #28a8eb;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .calendar-header button:hover {
+      background: #1e90d6;
+    }
+
+    .month-year {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      table-layout: fixed; /* equal column widths */
+    }
+
+    th {
+      padding: 12px 0;
+      color: #555;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 6px;
+      height: 110px; /* equal row heights */
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.25s ease, transform 0.2s ease;
+      position: relative;
+      vertical-align: top;
+      border: 1px solid #f1f5f9;
+      background: #fff;
+    }
+
+    td:hover { background: #f0f9ff; transform: translateY(-1px); }
+
+    .today { background: #28a8eb; color: white; font-weight: bold; }
+
+    /* Dot under date if event exists */
+    .event-day::after {
+      content: "";
+      display: block;
+      width: 6px;
+      height: 6px;
+      background: #28a8eb;
+      border-radius: 50%;
+      margin: 3px auto 0;
+    }
+
+    /* Event Details Section */
+    .event-details {
+      flex: 1.2;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      min-height: 300px;
+    }
+
+    .event-details h3 {
+      margin-top: 0;
+      font-size: 20px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .event-card {
+      background: #f9fafc;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border-left: 6px solid #28a8eb;
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .event-card:hover {
+      transform: scale(1.02);
+      background: #f0f8ff;
+    }
+
+    .event-icon {
+      width: 60px;
+      height: 60px;
+    }
+
+    .event-info {
+      flex: 1;
+    }
+
+    .event-title {
+      font-weight: bold;
+      color: #333;
+      margin: 0 0 5px;
+    }
+
+    .event-type {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 6px;
+      color: white;
+    }
+
+    .workshop { background: #ff9800; }
+    .training { background: #28a8eb; }
+    .webinar { background: #4caf50; }
+    .finance { background: #9c27b0; }
+
+    .event-desc {
+      font-size: 14px;
+      color: #555;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .event-card.open .event-desc {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .calendar-container {
+        flex-direction: column;
+      }
+    }
+
+    /* ====== FOOTER STYLING ====== */
+    .site-footer {
+      background: linear-gradient(135deg, #0b1320 0%, #1a2332 50%, #2d3748 100%);
+      color: #fff;
+      margin-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .site-footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #f9b233, transparent);
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 50px;
+      align-items: start;
+    }
+    
+    .footer-main h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #f9b233;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    
+    .footer-main h3::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, #f9b233, #ff6b35);
+      border-radius: 2px;
+    }
+    
+    /* Footer logo styling */
+    .footer-logo {
+      margin-bottom: 20px;
+    }
+    
+    .footer-logo-img {
+      height: 250px; /* Adjustable height - change this value to resize */
+      width: auto;
+      object-fit: contain;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-logo-img:hover {
+      transform: scale(1.05);
+    }
+    
+    .footer-main p {
+      color: #cbd5e0;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+    
+    .footer-section h4 {
+      color: #f9b233;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 12px;
+    }
+    
+    .footer-section ul li a {
+      color: #cbd5e0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .footer-section ul li a:hover {
+      color: #f9b233;
+      transform: translateX(5px);
+    }
+    
+    .footer-section ul li i {
+      color: #f9b233;
+      width: 16px;
+      font-size: 0.9rem;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    
+    .social-links a {
+      width: 40px;
+      height: 40px;
+      background: rgba(249, 178, 51, 0.1);
+      border: 1px solid rgba(249, 178, 51, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #cbd5e0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      background: #f9b233;
+      color: #0b1320;
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 8px 20px rgba(249, 178, 51, 0.3);
+    }
+    
+    .footer-bottom {
+      background: rgba(0, 0, 0, 0.3);
+      border-top: 1px solid rgba(249, 178, 51, 0.2);
+      padding: 25px 0;
+    }
+    
+    .footer-bottom-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+    
+    .footer-bottom-content p {
+      color: #a0aec0;
+      margin: 5px 0;
+      font-size: 0.9rem;
+    }
+    
+    .footer-bottom-content p:first-child {
+      font-weight: 600;
+      color: #cbd5e0;
+    }
+    
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 40px 20px 30px;
+      }
+      
+      .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+      
+      .footer-main h3 {
+        font-size: 1.8rem;
+      }
+      
+      .social-links {
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .footer-links {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .footer-main h3 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===================
+       NAVIGATION BAR
+  =================== -->
+  <nav class="navbar">
+    <!-- Social Media Bar -->
+    <div class="social-bar">
+      <div class="social-container">
+        <span class="follow-text">Follow Us</span>
+        <div class="social-icons">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Navigation -->
+    <div class="nav-container">
+      <a href="homepage.html" class="logo" style="color:#fff; font-weight:bold; text-decoration:none; font-size:1.2rem;">
+        BIG Consultants
+      </a>
+      
+      <ul class="nav-menu">
+        <li><a href="homepage.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="projects">
+          <a href="projects.html">Products & Services <i class="fas fa-chevron-down"></i></a>
+          <ul class="dropdown">
+            <li><a href="eventscalendar.html" style="color: #f9b233;">Events Calendar</a></li>
+          </ul>
+        </li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ====== Events Section Header ====== -->
+  <div class="section-header">
+    <h2>Events Calendar</h2>
+  </div>
+
+  <!-- ====== Calendar Layout ====== -->
+  <div class="calendar-container">
+    
+    <!-- Calendar -->
+    <div class="calendar">
+      <div class="calendar-header">
+        <div>
+          <button onclick="prevYear()">«</button>
+          <button onclick="prevMonth()">‹</button>
+        </div>
+        <div class="month-year" id="monthYear"></div>
+        <div>
+          <button onclick="nextMonth()">›</button>
+          <button onclick="nextYear()">»</button>
+        </div>
+      </div>
+      <table id="calendarTable">
+        <thead>
+          <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+          </tr>
+        </thead>
+        <tbody id="calendarBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Event Details -->
+    <div class="event-details" id="eventDetails">
+      <h3>Event Details</h3>
+      <p>Select a date to see events.</p>
+    </div>
+  </div>
+
+  <script>
+    const calendarBody = document.getElementById("calendarBody");
+    const monthYear = document.getElementById("monthYear");
+    const eventDetails = document.getElementById("eventDetails");
+
+    let today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    const months = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    // Events Database
+    const events = {
+      "2025-09-05": [
+        { title: "Farmers Workshop", type: "workshop", desc: "Hands-on workshop for farmers to learn modern techniques." },
+        { title: "Digital Training Session", type: "training", desc: "Skill-building session on digital tools for agriculture." }
+      ],
+      "2025-09-15": [
+        { title: "Market Linkage Meetup", type: "webinar", desc: "Connecting farmers with buyers and distributors." }
+      ],
+      "2025-09-22": [
+        { title: "Finance Awareness Program", type: "finance", desc: "Understanding loans, credit, and microfinance options." },
+        { title: "Consultancy Webinar", type: "webinar", desc: "Expert advice session on agribusiness strategies." }
+      ]
+    };
+
+    function renderCalendar(month, year) {
+      calendarBody.innerHTML = "";
+      monthYear.textContent = `${months[month]} ${year}`;
+
+      let firstDay = new Date(year, month).getDay();
+      let daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+      let date = 1;
+      for (let i = 0; i < 6; i++) {
+        let row = document.createElement("tr");
+
+        for (let j = 0; j < 7; j++) {
+          let cell = document.createElement("td");
+          if (i === 0 && j < firstDay) {
+            cell.textContent = "";
+          } else if (date > daysInMonth) {
+            break;
+          } else {
+            cell.textContent = date;
+            cell.style.wordWrap = 'break-word';
+            let cellDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+
+            if (
+              date === today.getDate() &&
+              year === today.getFullYear() &&
+              month === today.getMonth()
+            ) {
+              cell.classList.add("today");
+            }
+
+            if (events[cellDate]) {
+              cell.classList.add("event-day");
+            }
+
+            cell.onclick = () => showEvents(cellDate);
+            date++;
+          }
+          row.appendChild(cell);
+        }
+        calendarBody.appendChild(row);
+      }
+    }
+
+    function showEvents(date) {
+      eventDetails.innerHTML = `<h3>Events on ${date}</h3>`;
+      if (events[date]) {
+        events[date].forEach(ev => {
+          let card = document.createElement("div");
+          card.classList.add("event-card");
+          card.innerHTML = `
+            <img src="images/group beach photo.jpg" class="event-icon" alt="event icon">
+            <div class="event-info">
+              <span class="event-type ${ev.type}">${ev.type.toUpperCase()}</span>
+              <p class="event-title">${ev.title}</p>
+              <p class="event-desc">${ev.desc}</p>
+            </div>
+          `;
+          card.addEventListener("click", () => {
+            card.classList.toggle("open");
+          });
+          eventDetails.appendChild(card);
+        });
+      } else {
+        eventDetails.innerHTML += `<p>No events for this date.</p>`;
+      }
+    }
+
+    function prevMonth() {
+      currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+      currentYear = currentMonth === 11 ? currentYear - 1 : currentYear;
+      renderCalendar(currentMonth, currentYear);
+    }
+
+    function nextMonth() {
+      currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+      currentYear = currentMonth === 0 ? currentYear + 1 : currentYear;
+      renderCalendar(currentMonth, currentYear);
+    }
+
+    function prevYear() {
+      currentYear--;
+      renderCalendar(currentMonth, currentYear);
+    }
+
+    function nextYear() {
+      currentYear++;
+      renderCalendar(currentMonth, currentYear);
+    }
+
+    renderCalendar(currentMonth, currentYear);
+  </script>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-logo">
+          <img src="images/BCL the Logo.png" alt=" BCL LTD Consultants" class="footer-logo-img">
+        </div>
+        <p>Tailored Strategies, Stronger Governance, Better Lives.</p>
+      </div>
+      
+      <div class="footer-links">
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="projects.html">Services</a></li>
+            <li><a href="eventscalendar.html">Events</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="projects.html#Short-Term">Short-Term Consultancies</a></li>
+            <li><a href="projects.html#training">Training, Coaching and Mentoring</a></li>
+            <li><a href="projects.html#capacity development">Capacity Development</a></li>
+            <li><a href="projects.html#biz dev">Business Development Services</a></li>
+            <li><a href="projects.html#grants">Grants and Funds Management Services</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> Kisumu, Kenya</li>
+            <li><i class="fas fa-phone"></i> +254 722 323271</li>
+            <li><i class="fas fa-envelope"></i> bigmfi@yahoo.com</li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2025 BIG Analytica. All rights reserved.</p>
+        <p>Empowering communities through data-driven innovation.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

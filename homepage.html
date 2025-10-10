@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extensive Field Force</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #333;
+      margin: 0;
+      padding-top: 80px; /* Reduced space for smaller navbar */
+      overflow-x: hidden;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    /* ===================
+       NAVIGATION BAR
+    =================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 19, 32, 0.95);
+      backdrop-filter: blur(15px);
+      padding: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      background: rgba(11, 19, 32, 0.98);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-bar {
+      background: rgba(11, 19, 32, 0.98);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .social-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 20px;
+      gap: 10px;
+    }
+
+    .follow-text {
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-right: 5px;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 20px;
+    }
+
+    .logo {
+      height: auto; /* Allow logo to determine its own height */
+      width: auto;
+    }
+
+    .logo img {
+      height: auto; /* Let navbar-logo class control the height */
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* Navbar logo styling */
+    .navbar-logo {
+      height: 40px; /* Professional size - much smaller */
+      width: auto;
+      object-fit: contain;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-menu li {
+      position: relative;
+    }
+
+    .nav-menu a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 10px 0;
+      position: relative;
+    }
+
+    .nav-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #f9b233, #ff6b35);
+      transition: width 0.3s ease;
+    }
+
+    .nav-menu a:hover::after {
+      width: 100%;
+    }
+
+    .nav-menu a:hover {
+      color: #f9b233;
+      transform: translateY(-2px);
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: rgba(11, 19, 32, 0.98);
+      min-width: 180px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown li {
+      width: 100%;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown li:last-child a {
+      border-bottom: none;
+    }
+
+    .dropdown a:hover {
+      background: rgba(249, 178, 51, 0.1);
+      color: #f9b233;
+    }
+
+    .projects:hover .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .projects a i {
+      transition: transform 0.3s ease;
+      font-size: 0.8rem;
+      margin-left: 5px;
+    }
+
+    .projects:hover a i {
+      transform: rotate(180deg);
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .social-icons a {
+      color: #fff;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      padding: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .social-icons a:hover {
+      color: #f9b233;
+      background: rgba(249, 178, 51, 0.2);
+      transform: translateY(-2px) scale(1.1);
+      box-shadow: 0 4px 12px rgba(249, 178, 51, 0.3);
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .nav-menu {
+        gap: 20px;
+      }
+      
+      .nav-menu a {
+        font-size: 0.9rem;
+      }
+      
+      .social-icons {
+        gap: 10px;
+      }
+      
+      .social-icons a {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+    }
+
+    /* ===================
+       HERO SECTION (Replaced with slide-based version)
+    =================== */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: block;
+      overflow: hidden;
+      color: #fff;
+      background: #000;
+    }
+
+    .hero-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background-size: cover;
+      background-position: top center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1.5s ease, transform 1.5s ease;
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      background: transparent; /* remove dark shade */
+      padding: 0;
+      border-radius: 0;
+      animation: fadeInUp 1.5s ease forwards;
+      text-align: center;
+      position: absolute;
+      top: 30%;
+      left: 20%;
+      transform: translate(-50%, -50%);
+      z-index: 2; /* above background slides */
+      width: 90%;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 20px;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+      transition: opacity 0.45s ease;
+    }
+
+    .underline {
+      width: 60%;
+      height: 2px;
+      background: #fff;
+      margin: 0 auto 30px;
+      position: relative;
+    }
+    .underline::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 40px;
+      height: 2px;
+      background: #ff0054;
+      transform: translateX(-50%);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Title sets positioning */
+    .title-set {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      text-align: center; /* ensure titles are centered */
+    }
+
+    .title-set.active {
+      opacity: 1;
+    }
+
+    .title-set h1 {
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    }
+
+    /* Underline style under first headline */
+    .title-underline {
+      width: min(75%, 900px);
+      height: 6px;
+      margin: 10px auto 18px;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 6px;
+      align-items: center;
+    }
+    .title-underline .ul-left {
+      height: 4px;
+      background: linear-gradient(90deg, #e23b34, #f59e0b);
+      border-radius: 999px;
+      box-shadow: 0 0 10px rgba(226,59,52,0.35);
+    }
+    .title-underline .ul-right {
+      height: 4px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 999px;
+    }
+
+    /* Hero headline style + underline like screenshot */
+    /* remove enhanced headline/underline (reverting to original look) */
+
+    /* Intro: emerge from depth for first heading */
+    .depth-intro { will-change: transform, filter, opacity, text-shadow; }
+
+    @keyframes depthIntro {
+      0% {
+        opacity: 0;
+        transform: translateY(28px) scale(0.9) translateZ(-140px);
+        filter: blur(10px) brightness(0.85) saturate(0.95);
+        letter-spacing: 0.5px;
+        text-shadow: 0 20px 40px rgba(0,0,0,0.55), 0 0 0 rgba(0,0,0,0);
+      }
+      60% {
+        opacity: 1;
+        transform: translateY(0) scale(1.02) translateZ(-20px);
+        filter: blur(1.5px) brightness(1.02) saturate(1.05);
+        letter-spacing: 0px;
+        text-shadow: 0 8px 22px rgba(0,0,0,0.45), 0 0 0 rgba(0,0,0,0.2);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) translateZ(0);
+        filter: blur(0) brightness(1) saturate(1);
+        letter-spacing: 0px;
+        text-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      }
+    }
+
+    /* Word-by-word depth animation */
+    .depth-words { display: inline-block; overflow: hidden; }
+    .depth-words .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(22px) scale(0.94) translateZ(-110px);
+      filter: blur(8px);
+      animation: wordDepth 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      will-change: transform, filter, opacity;
+    }
+    .depth-words .space { display: inline-block; width: 0.4ch; }
+    @keyframes wordDepth {
+      60% { opacity: 1; transform: translateY(0) scale(1.03) translateZ(-16px); filter: blur(1.2px); }
+      100% { opacity: 1; transform: translateY(0) scale(1) translateZ(0); filter: blur(0); }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Hero buttons: appear only on hover */
+    .hero .buttons { opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease; }
+    .hero:hover .buttons { opacity: 1; visibility: visible; transform: translateY(0); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: transform 0.2s ease, background 0.3s ease;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .btn:hover { transform: translateY(-3px); }
+
+    .btn-discover { background: #f4a100; }
+    .btn-discover:hover { background: #d98b00; }
+    .btn-explore { background: #d62828; }
+    .btn-explore:hover { background: #b71c1c; }
+    .btn-contact { background: #f4a100; }
+    .btn-contact:hover { background: #d98b00; }
+
+    .btn-discover {
+      background: #f9b233;
+      color: #fff;
+      animation-delay: 1s; /* fade in after text */
+    }
+
+    .btn-explore {
+      background: #e63946;
+      color: #fff;
+      animation-delay: 1s; /* fade in after discover */
+    }
+
+    .btn-contact {
+      background: #059669;
+      color: #fff;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* remove full-width button override */
+
+    /* ===================
+       PLATFORM SECTION
+    =================== */
+    .platform {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      position: relative;
+    }
+
+    .platform::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+    }
+
+    .platform-icons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      animation: fadeInUp 1s ease-out 0.5s both;
+    }
+
+    /* Circle cards */
+    .icon-card {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f3f6fa 0%, #e2e8f0 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Cool glow ring (replaces orange) */
+    .icon-card::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: conic-gradient(from 180deg at 50% 50%, #60a5fa, #a78bfa, #22d3ee, #60a5fa);
+      border-radius: 50%;
+      z-index: 0;
+      opacity: 0.0;
+      transition: opacity 0.35s ease;
+      filter: blur(6px);
+    }
+
+    .icon-card:hover::after {
+      opacity: 0.35;
+    }
+
+    .icon-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Icon inside circle */
+    .icon-card i {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      z-index: 2;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .icon-card:hover i {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    /* Colorful icons for each card (refined, no orange) */
+    .baseline-surveys i { color: #60a5fa; } /* Sky blue */
+    .policy-analysis i { color: #22c55e; } /* Emerald */
+    .strategy-development i { color: #a78bfa; } /* Soft violet */
+    .data-insights i { color: #2563eb; }
+    .big-data i { color: #059669; }
+    .trainings i { color: #dc2626; }
+    .mobile-capture i { color: #7c3aed; }
+    .location i { color: #38bdf8; }
+    .insurance i { color: #0891b2; }
+    .satellite i { color: #be185d; }
+
+    /* Label text inside circle */
+    .icon-card span {
+      font-weight: bold;
+      font-size: 1rem;
+      z-index: 2;
+      position: relative;
+      color: #000; /* black text as requested */
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* Background photo reveal (locked → unlocked) */
+    .icon-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-size: 110% 110%;
+      background-position: 50% 50%;
+      opacity: 0.2;
+      clip-path: circle(0% at 50% 50%);
+      transition: clip-path 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), background-size 1.1s cubic-bezier(0.22, 1, 0.36, 1), background-position 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: brightness(var(--circle-brightness, 0.8)) contrast(1.05) saturate(1.05) blur(2px) grayscale(10%);
+      transform: scale(1.05);
+      z-index: 1;
+      will-change: clip-path, opacity, filter, transform, background-size, background-position;
+    }
+
+    .icon-card:hover::before {
+      opacity: 1;
+      clip-path: circle(140% at 50% 50%);
+      filter: brightness(var(--circle-brightness-hover, 1.06)) contrast(1.06) saturate(1.1) blur(0px) grayscale(0%);
+      transform: scale(1.0);
+      background-size: 100% 100%;
+      background-position: 48% 52%;
+    }
+
+    /* Background photos for Strategic Areas (use existing assets) */
+    .baseline-surveys::before { background-image: url('images/DSC_0126.JPG'); }
+    .policy-analysis::before { background-image: url('images/DSC_0201.JPG'); }
+    .strategy-development::before { background-image: url('images/DSC_0156.JPG'); }
+    .data-insights::before { background-image: url('images/DSC_0142.JPG'); }
+    .big-data::before { background-image: url('images/DSC_0194.JPG'); }
+    .trainings::before { background-image: url('images/DSC_0201.JPG'); }
+    .mobile-capture::before { background-image: url('images/DSC_0126.JPG'); }
+    .location::before { background-image: url('images/DSC_0156.JPG'); }
+    .insurance::before { background-image: url('images/DSC_0194.JPG'); }
+    .satellite::before { background-image: url('images/DSC_0142.JPG'); }
+
+    /* ===================
+       STRATEGY DEVELOPMENT SUB-SECTION
+    =================== */
+    .strategy-section {
+      text-align: center;
+      padding: 60px 20px 80px;
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+      position: relative;
+    }
+
+    .strategy-subgrid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      gap: 30px;
+      justify-items: center;
+      align-items: stretch;
+      padding-top: 10px;
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    @media (max-width: 992px) {
+      .strategy-subgrid { grid-template-columns: repeat(2, minmax(180px, 1fr)); }
+    }
+
+    @media (max-width: 520px) {
+      .strategy-subgrid { grid-template-columns: 1fr; }
+    }
+
+    .mini-card {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #eef2ff, #e2e8f0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: default;
+    }
+
+    .mini-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(249, 178, 51, 0.15), transparent 60%);
+      pointer-events: none;
+    }
+
+    .mini-card:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Photo reveal for mini-circles */
+    .mini-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-size: 110% 110%;
+      background-position: 50% 50%;
+      opacity: 0.2;
+      clip-path: circle(0% at 50% 50%);
+      transition: clip-path 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), background-size 1.1s cubic-bezier(0.22, 1, 0.36, 1), background-position 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: brightness(var(--circle-brightness, 0.78)) contrast(1.05) saturate(1.05) blur(2px) grayscale(10%);
+      transform: scale(1.05);
+      z-index: 1;
+      will-change: clip-path, opacity, filter, transform, background-size, background-position;
+    }
+
+    .mini-card:hover::before {
+      opacity: 1;
+      clip-path: circle(140% at 50% 50%);
+      filter: brightness(var(--circle-brightness-hover, 1.06)) contrast(1.06) saturate(1.1) blur(0px) grayscale(0%);
+      transform: scale(1.0);
+      background-size: 100% 100%;
+      background-position: 48% 52%;
+    }
+
+    .mini-card i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .mini-card span {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #0b1320;
+      line-height: 1.2;
+      padding: 0 10px;
+    }
+
+    /* Individual icon colors */
+    .mini-oca i { color: #38bdf8; }
+    .mini-strategic i { color: #22c55e; }
+    .mini-rmme i { color: #ef4444; }
+    .mini-external i { color: #a78bfa; }
+
+    /* Images for mini-cards */
+    .mini-oca::before { background-image: url('images/DSC_0194.JPG'); }
+    .mini-strategic::before { background-image: url('images/cash\ n\ plant.jpg'); }
+    .mini-rmme::before { background-image: url('images/DSC_0201.JPG'); }
+    .mini-external::before { background-image: url('images/DSC_0156.JPG'); }
+
+    /* ===================
+       PARTNERSHIPS SECTION
+    =================== */
+    .partnerships {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #0b1320 0%, #1a2332 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .partnerships::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #f9b233, transparent);
+    }
+
+    .partnerships::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(249, 178, 51, 0.05) 0%, transparent 70%);
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(30px, -30px) rotate(120deg); }
+      66% { transform: translate(-20px, 20px) rotate(240deg); }
+    }
+
+    .partnerships h2 {
+      color: #fff;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .counters {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 1s ease-out 0.3s both;
+    }
+
+    .counter-box {
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .counter-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .counter-box i {
+      font-size: 2rem;
+      color: #ffce00;
+      margin-bottom: 10px;
+    }
+
+    .counter {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+
+    .partners-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .partners-logos img {
+      max-height: 100px;
+      object-fit: contain;
+      filter: brightness(0) invert(-1); /* make logos white */
+      transition: transform 0.3s ease;
+    }
+
+    .partners-logos img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Carousel container for step-by-step sliding */
+    .carousel-container {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      margin: 100px 0;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .carousel-track {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      width: max-content;
+      transition: transform 1s ease-in-out;
+    }
+
+    .carousel-track img {
+      max-height: 100px;
+      object-fit: contain;
+      filter: brightness(0) invert(-1);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+      width: 200px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-track img:hover {
+      transform: scale(1.15);
+    }
+
+    /* Show only 4 logos at a time */
+    .carousel-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .carousel-viewport {
+      width: calc(4 * 260px); /* 4 logos * (200px width + 60px gap) */
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ===================
+       LOADING ANIMATION
+    =================== */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0b1320 0%, #1a2332 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loading-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(249, 178, 51, 0.3);
+      border-top: 3px solid #f9b233;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: #fff;
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===================
+       LOADING SCREEN
+  =================== -->
+  <div class="loading-screen" id="loadingScreen">
+    <div style="text-align: center;">
+      <div class="loader"></div>
+      <div class="loading-text">Loading BIG Analytica...</div>
+    </div>
+  </div>
+
+  <!-- ===================
+       NAVIGATION BAR
+  =================== -->
+  <nav class="navbar">
+    <!-- Social Media Bar -->
+    <div class="social-bar">
+      <div class="social-container">
+        <span class="follow-text">Follow Us</span>
+        <div class="social-icons">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Navigation -->
+    <div class="nav-container">
+      <a href="homepage.html" class="logo" style="color:#fff; font-weight:bold; text-decoration:none; font-size:1.2rem;">
+        BIG Consultants
+      </a>
+      
+      <ul class="nav-menu">
+        <li><a href="homepage.html" style="color: #f9b233;">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="projects">
+          <a href="projects.html">Products & Services <i class="fas fa-chevron-down"></i></a>
+          <ul class="dropdown">
+            <li><a href="eventscalendar.html">Events Calendar</a></li>
+          </ul>
+        </li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===================
+       HERO SECTION
+  =================== -->
+  <section class="hero">
+    <div class="hero-container">
+      <!-- Background Slides Only -->
+      <div class="hero-slide active" style="background-image: url('images/Sweet\ Potatoes\ harvest.jpg');"></div>
+      <div class="hero-slide" style="background-image: url('images/community\ meeting.JPG');"></div>
+
+      <!-- Static Overlay Content -->
+      <div class="hero-content">
+        <h1 id="heroHeadline">Extensive Field Force</h1>
+        <div class="underline"></div>
+        <div class="buttons" id="heroButtons">
+          <a href="about.html" class="btn btn-discover"><i class="fas fa-check-circle"></i> DISCOVER</a>
+          <a href="about.html" class="btn btn-explore"><i class="fas fa-check-circle"></i> EXPLORE</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================
+       PLATFORM SECTION
+  =================== -->
+  <!-- ===================
+       PLATFORM SECTION
+  =================== -->
+  <section class="platform">
+    <h2>Strategic Areas</h2>
+    <div class="platform-icons">
+      <!-- Baseline & End line surveys -->
+      <div class="icon-card baseline-surveys">
+        <i class="fas fa-clipboard-list"></i>
+        <span>Baseline & End line Surveys</span>
+      </div>
+
+      <!-- Policy Analysis Development & Reviews -->
+      <div class="icon-card policy-analysis">
+        <i class="fas fa-balance-scale"></i>
+        <span>Policy Analysis <br> Development & Reviews</span>
+      </div>
+
+      <!-- Strategy Development -->
+      <div class="icon-card strategy-development">
+        <i class="fas fa-project-diagram"></i>
+        <span>Strategy Development <br>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Strategy Development: Subtitles Grid -->
+  <section class="strategy-section" aria-label="Strategy Development Subtitles">
+    <h2>Strategy Development</h2>
+    <div class="strategy-subgrid">
+      <div class="mini-card mini-oca" title="Organizational Capacity Assessments (OCA’s)">
+        <i class="fas fa-check-double" aria-hidden="true"></i>
+        <span>OCA’s</span>
+      </div>
+      <div class="mini-card mini-strategic" title="Strategic Plans">
+        <i class="fas fa-bullseye" aria-hidden="true"></i>
+        <span>Strategic Plans</span>
+      </div>
+      <div class="mini-card mini-rmme" title="Resource Mobilization, Monitoring & Evaluation">
+        <i class="fas fa-chart-line" aria-hidden="true"></i>
+        <span>Resource Mobilization, Monitoring & Evaluation</span>
+      </div>
+      <div class="mini-card mini-external" title="External Relations & Public Relations Plans">
+        <i class="fas fa-handshake-angle" aria-hidden="true"></i>
+        <span>External Relations Plans & Public Relations Plans</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================
+       PARTNERSHIPS SECTION
+  =================== -->
+  <section class="partnerships">
+    <h2>Our Partnerships</h2>
+    <div class="counters">
+      <div class="counter-box">
+        <i class="fas fa-users"></i>
+        <div class="counter" data-target="5">0</div>
+        <p>Producer Organizations</p>
+      </div>
+      <div class="counter-box">
+        <i class="fas fa-handshake"></i>
+        <div class="counter" data-target="15">0</div>
+        <p>Input Providers</p>
+      </div>
+      <div class="counter-box">
+        <i class="fas fa-landmark"></i>
+        <div class="counter" data-target="10">0</div>
+        <p>Financial & Insurance Providers</p>
+      </div>
+      <div class="counter-box">
+        <i class="fas fa-dollar-sign"></i>
+        <div class="counter" data-target="50">0</div>
+        <p>Investment Amount (M)</p>
+      </div>
+    </div>
+
+    <!-- Partner Logos Carousel -->
+    <div class="carousel-container">
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- First set of logos -->
+          <img src="images/Strategic Connections.png" alt="Strategic Connections">
+          <img src="images/ads western.png" alt="ADS Western">
+          <img src="images/ads mt kenya east.png" alt="ADS Mt Kenya East">
+          <img src="images/ads nyanza white bg.png" alt="ADS Nyanza">
+          <img src="images/KCDT.png" alt="KCDT">
+          <img src="images/RSP Kaimosi.jpeg" alt="RSP Kaimosi">
+          <img src="images/SANA Intl.png" alt="SANA International">
+          <img src="images/Lliffton Analytica.png" alt="Lliffton Analytica">
+          <img src="images/JAM logo.png" alt="Justice & Mercy">
+          <img src="images/PAC logo.png" alt="PAC Capital">
+          <img src="images/maisha project.png" alt="Maisha Project">
+          <img src="images/InsightSphere.jpeg" alt="Insightsphere">
+
+
+          <!-- Duplicate set for seamless infinite scroll -->
+          <img src="images/Strategic Connections.png" alt="Strategic Connections">
+          <img src="images/ads western.png" alt="ADS Western">
+          <img src="images/ads mt kenya east.png" alt="ADS Mt Kenya East">
+          <img src="images/ads nyanza white bg.png" alt="ADS Nyanza">
+          <img src="images/KCDT.png" alt="KCDT">
+          <img src="images/RSP Kaimosi.jpeg" alt="RSP Kaimosi">
+          <img src="images/SANA Intl.png" alt="SANA International">
+          <img src="images/Lliffton Analytica.png" alt="Lliffton Analytica">
+          <img src="images/justice&mercy.jpeg" alt="Justice & Mercy">
+          <img src="images/PAC Capital.jpeg" alt="PAC Capital">
+          <img src="images/maisha project.png" alt="Maisha Project">
+          <img src="images/InsightSphere.jpeg" alt="Insightsphere">
+
+
+          <!-- Additional duplicates for smooth infinite scroll -->
+          <img src="images/Strategic Connections.png" alt="Strategic Connections">
+          <img src="images/ads western.png" alt="ADS Western">
+          <img src="images/ads mt kenya east.png" alt="ADS Mt Kenya East">
+          <img src="images/ads nyanza white bg.png" alt="ADS Nyanza">
+          <img src="images/maisha project.png" alt="Maisha Project">
+          <img src="images/InsightSphere.jpeg" alt="Insightsphere">
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================
+       JAVASCRIPT
+  =================== -->
+  <script>
+    // ==============================
+    // NAVBAR SCROLL EFFECT
+    // ==============================
+    const navbar = document.querySelector('.navbar');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // ==============================
+    // SMOOTH SCROLL FOR ANCHOR LINKS
+    // ==============================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // ==============================
+    // HERO SLIDES (new)
+    // ==============================
+    const slides = document.querySelectorAll('.hero-slide');
+    let currentIndex = 0;
+    const headlines = [
+      'Extensive Field Force',
+      'Rich Ecosystem Database'
+    ];
+    let headlineIndex = 0;
+
+    // Start slideshow after page loads
+    window.addEventListener('load', () => {
+      // Rotate background slides
+      setInterval(() => {
+        slides[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % slides.length;
+        slides[currentIndex].classList.add('active');
+      }, 6000);
+
+      // Rotate headline text independently, centered
+      const headlineEl = document.getElementById('heroHeadline');
+      const buttonsContainer = document.getElementById('heroButtons');
+      setInterval(() => {
+        headlineEl.style.opacity = '0';
+        setTimeout(() => {
+          headlineIndex = (headlineIndex + 1) % headlines.length;
+          headlineEl.textContent = headlines[headlineIndex];
+          headlineEl.style.opacity = '1';
+
+          // Swap buttons depending on current headline
+          if (headlines[headlineIndex].toLowerCase().includes('rich ecosystem')) {
+            buttonsContainer.innerHTML = `
+              <a href="contact.html" class="btn btn-contact"><i class="fas fa-check-circle"></i> CONTACT US</a>
+            `;
+          } else {
+            buttonsContainer.innerHTML = `
+              <a href="about.html" class="btn btn-discover"><i class="fas fa-check-circle"></i> DISCOVER</a>
+              <a href="about.html" class="btn btn-explore"><i class="fas fa-check-circle"></i> EXPLORE</a>
+            `;
+          }
+        }, 450);
+      }, 6000);
+    });
+
+    // Also ensure first title is visible on DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hide loading screen after page loads
+      setTimeout(() => {
+        const loadingScreen = document.getElementById('loadingScreen');
+        loadingScreen.classList.add('fade-out');
+      }, 1500);
+    });
+
+    // ==============================
+    // INTERSECTION OBSERVER FOR ANIMATIONS
+    // ==============================
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe elements for scroll animations
+    document.querySelectorAll('.icon-card').forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+      observer.observe(card);
+    });
+
+    // ==============================
+    // COUNTER ANIMATION ON SCROLL
+    // ==============================
+    const counters = document.querySelectorAll('.counter');
+    let counterStarted = false; // prevent repeat runs
+
+    // Adjust speed here: larger = slower
+    const counterSpeed = 1500; 
+
+    const startCounters = () => {
+      counters.forEach(counter => {
+        counter.innerText = '0';
+
+        const updateCounter = () => {
+          const target = +counter.getAttribute('data-target'); // final number
+          const current = +counter.innerText;
+          const increment = target / counterSpeed;
+
+          if (current < target) {
+            counter.innerText = `${Math.ceil(current + increment)}`;
+            setTimeout(updateCounter, 20); // adjust refresh interval
+          } else {
+            counter.innerText = target; // ensure final value
+          }
+        };
+
+        updateCounter();
+      });
+    };
+
+    // Trigger when partnerships section is visible
+    const partnershipsSection = document.querySelector('.partnerships');
+    const counterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !counterStarted) {
+          startCounters();
+          counterStarted = true;
+        }
+      });
+    }, { threshold: 0.5 }); // triggers when 50% visible
+
+    counterObserver.observe(partnershipsSection);
+
+    // ==============================
+    // INFINITE SCROLLING CAROUSEL
+    // ==============================
+    const carouselTrack = document.getElementById('carouselTrack');
+    const logos = carouselTrack.querySelectorAll('img');
+    const originalLogosCount = 10; // Number of unique logos
+    const logosPerView = 4;
+    const slideWidth = 260; // 200px logo + 60px gap
+    let currentPosition = 0;
+
+    function slideToNext() {
+      currentPosition += slideWidth;
+      carouselTrack.style.transform = `translateX(-${currentPosition}px)`;
+      
+      // Reset position when we've scrolled through all original logos
+      // This creates the seamless infinite effect
+      if (currentPosition >= originalLogosCount * slideWidth) {
+        setTimeout(() => {
+          currentPosition = 0;
+          carouselTrack.style.transition = 'none';
+          carouselTrack.style.transform = `translateX(-${currentPosition}px)`;
+          // Re-enable transition after reset
+          setTimeout(() => {
+            carouselTrack.style.transition = 'transform 1s ease-in-out';
+          }, 50);
+        }, 1000); // Wait for transition to complete
+      }
+    }
+
+    // Start the carousel after page loads
+    window.addEventListener('load', () => {
+      // Initial delay before starting
+      setTimeout(() => {
+        // Auto-slide every 3 seconds (2 seconds pause + 1 second transition)
+        setInterval(() => {
+          slideToNext();
+        }, 3000);
+      }, 2000); // Wait 2 seconds before starting
+    });
+  </script>
+  
+  <!-- ====== FOOTER STYLES ====== -->
+  <style>
+    .site-footer { background: linear-gradient(135deg, #0b1320 0%, #1a2332 50%, #2d3748 100%); color:#fff; margin-top:60px; position:relative; overflow:hidden; }
+    .site-footer::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, #f9b233, transparent); }
+    .footer-content { max-width:1200px; margin:0 auto; padding:60px 20px 40px; display:grid; grid-template-columns:1fr 2fr; gap:50px; align-items:start; }
+    .footer-main h3 { font-size:2rem; font-weight:700; color:#f9b233; margin-bottom:15px; position:relative; }
+    .footer-main h3::after { content:''; position:absolute; bottom:-8px; left:0; width:50px; height:3px; background:linear-gradient(90deg, #f9b233, #ff6b35); border-radius:2px; }
+    
+    /* Footer logo styling */
+    .footer-logo {
+      margin-bottom: 20px;
+    }
+    
+    .footer-logo-img {
+      height: 250px; /* Adjustable height - change this value to resize */
+      width: auto;
+      object-fit: contain;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-logo-img:hover {
+      transform: scale(1.05);
+    }
+    .footer-main p { color:#cbd5e0; line-height:1.6; font-size:1rem; }
+    .footer-links { display:grid; grid-template-columns:repeat(4, 1fr); gap:30px; }
+    .footer-section h4 { color:#f9b233; font-size:1.1rem; font-weight:600; margin-bottom:20px; letter-spacing:0.5px; }
+    .footer-section ul { list-style:none; padding:0; margin:0; }
+    .footer-section ul li { margin-bottom:12px; }
+    .footer-section ul li a { color:#cbd5e0; text-decoration:none; transition:all 0.3s ease; display:flex; align-items:center; gap:8px; }
+    .footer-section ul li a:hover { color:#f9b233; transform:translateX(5px); }
+    .footer-section ul li i { color:#f9b233; width:16px; font-size:0.9rem; }
+    .social-links { display:flex; gap:15px; margin-top:10px; }
+    .social-links a { width:40px; height:40px; background:rgba(249,178,51,0.1); border:1px solid rgba(249,178,51,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#cbd5e0; text-decoration:none; transition:all 0.3s ease; }
+    .social-links a:hover { background:#f9b233; color:#0b1320; transform:translateY(-3px) scale(1.1); box-shadow:0 8px 20px rgba(249,178,51,0.3); }
+    .footer-bottom { background: rgba(0,0,0,0.3); border-top:1px solid rgba(249,178,51,0.2); padding:25px 0; }
+    .footer-bottom-content { max-width:1200px; margin:0 auto; padding:0 20px; text-align:center; }
+    .footer-bottom-content p { color:#a0aec0; margin:5px 0; font-size:0.9rem; }
+    .footer-bottom-content p:first-child { font-weight:600; color:#cbd5e0; }
+    @media (max-width: 768px) { .footer-content { grid-template-columns:1fr; gap:40px; padding:40px 20px 30px; } .footer-links { grid-template-columns:repeat(2, 1fr); gap:30px; } .footer-main h3 { font-size:1.8rem; } .social-links { justify-content:center; } }
+    @media (max-width: 480px) { .footer-links { grid-template-columns:1fr; gap:25px; } .footer-main h3 { font-size:1.6rem; } }
+  </style>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-logo">
+          <img src="images/BCL the Logo.png" alt=" BCL LTD Consultants" class="footer-logo-img">
+        </div>
+        <p>Tailored Strategies, Stronger Governance, Better Lives.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="projects.html">Services</a></li>
+            <li><a href="eventscalendar.html">Events</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="projects.html#Short-Term">Short-Term Consultancies</a></li>
+            <li><a href="projects.html#training">Training, Coaching and Mentoring</a></li>
+            <li><a href="projects.html#capacity development">Capacity Development</a></li>
+            <li><a href="projects.html#biz dev">Business Development Services</a></li>
+            <li><a href="projects.html#grants">Grants and Funds Management Services</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> Kisumu, Kenya</li>
+            <li><i class="fas fa-phone"></i> +254 722 323271</li>
+            <li><i class="fas fa-envelope"></i> bigmfi@yahoo.com</li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2025 BIG Analytica. All rights reserved.</p>
+        <p>Empowering communities through data-driven innovation.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

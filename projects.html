@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products and Services</title>
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f8fc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 100px; /* Space for fixed navbar */
+    }
+
+    /* ===================
+       NAVIGATION BAR
+    =================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 19, 32, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .social-bar {
+      background: rgba(11, 19, 32, 0.98);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .social-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 20px;
+      gap: 10px;
+    }
+
+    .follow-text {
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-right: 5px;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .logo {
+      height: auto; /* Allow logo to determine its own height */
+      width: auto;
+    }
+
+    .logo img {
+      height: auto; /* Let navbar-logo class control the height */
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* Navbar logo styling */
+    .navbar-logo {
+      height: 80px; /* Adjustable height - change this value to resize */
+      width: auto;
+      object-fit: contain;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-menu li {
+      position: relative;
+    }
+
+    .nav-menu a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      padding: 10px 0;
+    }
+
+    .nav-menu a:hover {
+      color: #f9b233;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: rgba(11, 19, 32, 0.98);
+      min-width: 180px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown li {
+      width: 100%;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown li:last-child a {
+      border-bottom: none;
+    }
+
+    .dropdown a:hover {
+      background: rgba(249, 178, 51, 0.1);
+      color: #f9b233;
+    }
+
+    .projects:hover .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .projects a i {
+      transition: transform 0.3s ease;
+      font-size: 0.8rem;
+      margin-left: 5px;
+    }
+
+    .projects:hover a i {
+      transform: rotate(180deg);
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .social-icons a {
+      color: #fff;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      padding: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .social-icons a:hover {
+      color: #f9b233;
+      background: rgba(249, 178, 51, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .nav-menu {
+        gap: 20px;
+      }
+      
+      .nav-menu a {
+        font-size: 0.9rem;
+      }
+      
+      .social-icons {
+        gap: 10px;
+      }
+      
+      .social-icons a {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+    }
+
+    /* =================== HEADER =================== */
+    .section-header {
+      background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)), url('images/home prototype.jpg') center/cover no-repeat;
+      padding: 60px 20px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .section-header h2 {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 0;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-header h2::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 3px;
+      background: #ff4c4c;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    .icon {
+      position: absolute;
+      font-size: 22px;
+      opacity: 0.8;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .icon.circle {
+      right: 20%;
+      top: 30%;
+      color: lightgreen;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 0.8; }
+      50% { transform: translateY(-15px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0.8; }
+    }
+
+    /* =================== CARDS =================== */
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .card p {
+      margin: 5px 0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .card:hover {
+      transform: translateY(-12px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: 15px;
+      background: linear-gradient(45deg, #f9b233 #77a7e1);
+      background-size: 300% 300%;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      animation: borderGlow 3s linear infinite;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    @keyframes borderGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* =================== TABS =================== */
+    .tabs {
+      margin: 60px auto;
+      width: 100%;
+      max-width: 1000px;
+      text-align: center;
+    }
+
+    .tab-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: #fff;
+      border: 2px solid #007bff;
+      padding: 10px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      color: #007bff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn:hover {
+      background: #007bff;
+      color: #fff;
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,123,255,0.4);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(45deg, #00c9ff, #007bff);
+      color: white;
+      box-shadow: 0 8px 20px rgba(0,123,255,0.5);
+      transform: translateY(-3px) scale(1.05);
+    }
+
+    .tab-content {
+      background: #fff;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: left;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content h4 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .tab-content ul {
+      margin: 0;
+      padding: 0 20px;
+      color: #555;
+    }
+
+    .tab-content ul li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===================
+       NAVIGATION BAR
+  =================== -->
+  <nav class="navbar">
+    <!-- Social Media Bar -->
+    <div class="social-bar">
+      <div class="social-container">
+        <span class="follow-text">Follow Us</span>
+        <div class="social-icons">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Navigation -->
+    <div class="nav-container">
+      <a href="../homepage.html" class="logo" style="color:#fff; font-weight:bold; text-decoration:none; font-size:1.2rem;">
+        BIG Consultants
+      </a>
+      
+      <ul class="nav-menu">
+        <li><a href="../homepage.html">Home</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li class="projects">
+          <a href="projects.html" style="color: #f9b233;">Products & Services <i class="fas fa-chevron-down"></i></a>
+          <ul class="dropdown">
+            <li><a href="../eventscalendar.html">Events Calendar</a></li>
+          </ul>
+        </li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- =================== HEADER =================== -->
+  <section class="section-header">
+    <h2>Products And Services</h2>
+    <span class="icon circle">⭕</span>
+  </section>
+
+  <!-- =================== CARDS =================== -->
+  <div class="card-container">
+    <div class="card">
+      <img src="images/Short term--meeting.jpg" alt="Short-Term Consultancies">
+      <div class="card-content">
+        <h3>Short-Term Consultancies</h3>
+        
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="images/Training--Lady presenting.jpg" alt="Training">
+      <div class="card-content">
+        <h3>Training, coaching and mentoring</h3>
+        
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="images/Capacity--group photo.jpg" alt="Capacity">
+      <div class="card-content">
+        <h3>Capacity Development</h3>
+        
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="images/Biz Dev--farm photo.jpg" alt="Biz Dev">
+      <div class="card-content">
+        <h3>Business Development Services</h3>
+    
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="images/Grants--meeting.jpg" alt="Grants and Funds Management Services">
+      <div class="card-content">
+        <h3>Grants and Funds Management Services</h3>
+        <!--<p>Digital Payments</p>
+        <p>Financial Access</p>
+      -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =================== BOTTOM TABS =================== -->
+  <div class="tabs">
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="showTab('Short-Term', event)">Short-Term Consultancies</button>
+      <button class="tab-btn" onclick="showTab('training', event)">Training, coaching and mentoring</button>
+      <button class="tab-btn" onclick="showTab('capacity development', event)">Capacity Development</button>
+      <button class="tab-btn" onclick="showTab('biz dev', event)">Business Development Services</button>
+      <button class="tab-btn" onclick="showTab('grants', event)">Grants and Funds Management Services</button>
+
+
+
+
+    </div>
+
+    <div id="Short-Term" class="tab-content">
+      <h4>Short-Term Consultancies</h4>
+      <ul>
+        <li>Hands on operational support to clients based on specified needs/ ToRs However, this is restricted to BIG’s strategic areas of focus and expertise.</li>
+        <li>Specific areas include Baseline & End line surveys, Policy Analysis Development & Reviews, Strategy Development (OCA’s, Strategic Plans, Resource Mobilization, Monitoring & Evaluation, External Relations Plans & Public Relations Plans)</li>
+        
+      </ul>
+    </div>
+
+    <div id="training" class="tab-content" style="display:none;">
+      <h4>Training, Coaching and Mentoring</h4>
+      <ul>
+        <li>Medium to long term accompaniment-based support/ back-stopping support on program management or organisational development including seasonal staff placements for onsite support.</li>
+        <li>Workshops and hands-on digital skills programs</li>
+        <li>Agri-business management training</li>
+      </ul>
+    </div>
+
+    <div id="capacity development" class="tab-content" style="display:none;">
+      <h4>Capacity Development</h4>
+      <ul>
+        <li>This entails undertaking capacity assessment and subsequent organisational development support to current and future BIG Clients and other service delivery actors.</li>
+        <li>These also include open or tailor-made training around Climate Resilient Agriculture, Livelihood improvement, WASH, Integrated Community Health and Nutrition, Inclusive education.</li>
+        
+    </div>
+
+    <div id="biz dev" class="tab-content" style="display:none;">
+      <h4>Business Development Services</h4>
+      <ul>
+        <li>This involves market driven BDS in areas climate resilient agriculture, food security and value chain development e-Commerce, Systems Digitization and Automation.</li>
+      
+      </ul>
+    </div>
+
+    <div id="grants" class="tab-content" style="display:none;">
+      <h4>Grants and Funds Management Services</h4>
+      <ul>
+        <li>This involves development of donor mapping, grant proposals, and supporting grantees in grants and funds management at affordable cost.</li>
+        
+      </ul>
+    </div>
+  </div>
+
+  <!-- =================== SCRIPT =================== -->
+  <script>
+    function showTab(tabId, event) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.getElementById(tabId).style.display = 'block';
+      event.target.classList.add('active');
+    }
+
+    // Handle navigation from footer links
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if there's a hash in the URL
+      const hash = window.location.hash;
+      if (hash) {
+        const targetId = hash.substring(1); // Remove the # symbol
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          // Find the corresponding tab button and click it
+          const tabButtons = document.querySelectorAll('.tab-btn');
+          tabButtons.forEach(btn => {
+            if (btn.onclick && btn.onclick.toString().includes(targetId)) {
+              btn.click();
+            }
+          });
+          
+          // Scroll to the tabs section
+          const tabsSection = document.querySelector('.tabs');
+          if (tabsSection) {
+            tabsSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }
+    });
+  </script>
+  
+  <!-- ====== FOOTER STYLES ====== -->
+  <style>
+    .site-footer { background: linear-gradient(135deg, #0b1320 0%, #1a2332 50%, #2d3748 100%); color:#fff; margin-top:60px; position:relative; overflow:hidden; }
+    .site-footer::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, #f9b233, transparent); }
+    .footer-content { max-width:1200px; margin:0 auto; padding:60px 20px 40px; display:grid; grid-template-columns:1fr 2fr; gap:50px; align-items:start; }
+    .footer-main h3 { font-size:2rem; font-weight:700; color:#f9b233; margin-bottom:15px; position:relative; }
+    .footer-main h3::after { content:''; position:absolute; bottom:-8px; left:0; width:50px; height:3px; background:linear-gradient(90deg, #f9b233, #ff6b35); border-radius:2px; }
+    
+    /* Footer logo styling */
+    .footer-logo {
+      margin-bottom: 20px;
+    }
+    
+    .footer-logo-img {
+      height: 250px; /* Adjustable height - change this value to resize */
+      width: auto;
+      object-fit: contain;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-logo-img:hover {
+      transform: scale(1.05);
+    }
+    .footer-main p { color:#cbd5e0; line-height:1.6; font-size:1rem; }
+    .footer-links { display:grid; grid-template-columns:repeat(4, 1fr); gap:30px; }
+    .footer-section h4 { color:#f9b233; font-size:1.1rem; font-weight:600; margin-bottom:20px; letter-spacing:0.5px; }
+    .footer-section ul { list-style:none; padding:0; margin:0; }
+    .footer-section ul li { margin-bottom:12px; }
+    .footer-section ul li a { color:#cbd5e0; text-decoration:none; transition:all 0.3s ease; display:flex; align-items:center; gap:8px; }
+    .footer-section ul li a:hover { color:#f9b233; transform:translateX(5px); }
+    .footer-section ul li i { color:#f9b233; width:16px; font-size:0.9rem; }
+    .social-links { display:flex; gap:15px; margin-top:10px; }
+    .social-links a { width:40px; height:40px; background:rgba(249,178,51,0.1); border:1px solid rgba(249,178,51,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#cbd5e0; text-decoration:none; transition:all 0.3s ease; }
+    .social-links a:hover { background:#f9b233; color:#0b1320; transform:translateY(-3px) scale(1.1); box-shadow:0 8px 20px rgba(249,178,51,0.3); }
+    .footer-bottom { background: rgba(0,0,0,0.3); border-top:1px solid rgba(249,178,51,0.2); padding:25px 0; }
+    .footer-bottom-content { max-width:1200px; margin:0 auto; padding:0 20px; text-align:center; }
+    .footer-bottom-content p { color:#a0aec0; margin:5px 0; font-size:0.9rem; }
+    .footer-bottom-content p:first-child { font-weight:600; color:#cbd5e0; }
+    @media (max-width: 768px) { .footer-content { grid-template-columns:1fr; gap:40px; padding:40px 20px 30px; } .footer-links { grid-template-columns:repeat(2, 1fr); gap:30px; } .footer-main h3 { font-size:1.8rem; } .social-links { justify-content:center; } }
+    @media (max-width: 480px) { .footer-links { grid-template-columns:1fr; gap:25px; } .footer-main h3 { font-size:1.6rem; } }
+  </style>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-logo">
+          <img src="images/BCL the Logo.png" alt=" BCL LTD Consultants" class="footer-logo-img">
+        </div>
+        <p>Tailored Strategies, Stronger Governance, Better Lives.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="projects.html">Services</a></li>
+            <li><a href="eventscalendar.html">Events</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="projects.html#Short-Term">Short-Term Consultancies</a></li>
+            <li><a href="projects.html#training">Training, Coaching and Mentoring</a></li>
+            <li><a href="projects.html#capacity development">Capacity Development</a></li>
+            <li><a href="projects.html#biz dev">Business Development Services</a></li>
+            <li><a href="projects.html#grants">Grants and Funds Management Services</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> Kisumu, Kenya</li>
+            <li><i class="fas fa-phone"></i> +254 722 323271</li>
+            <li><i class="fas fa-envelope"></i> bigmfi@yahoo.com</li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2025 BIG Analytica. All rights reserved.</p>
+        <p>Empowering communities through data-driven innovation.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
