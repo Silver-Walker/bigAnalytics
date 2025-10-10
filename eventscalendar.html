@@ -192,18 +192,52 @@
         gap: 20px;
       }
       
-      .nav-menu a {
-        font-size: 0.9rem;
+      .nav-container {
+        padding: 15px 20px;
       }
       
-      .social-icons {
-        gap: 10px;
+      .navbar-logo {
+        height: 40px;
+      }
+      
+      .nav-menu a {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
+      
+      .social-container {
+        padding: 0 15px;
+      }
+      
+      .follow-text {
+        font-size: 0.8rem;
       }
       
       .social-icons a {
-        width: 35px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .nav-menu {
+        gap: 15px;
+      }
+      
+      .nav-menu a {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+      }
+      
+      .navbar-logo {
         height: 35px;
-        font-size: 1rem;
+      }
+      
+      .social-icons a {
+        width: 25px;
+        height: 25px;
+        font-size: 0.75rem;
       }
     }
 
@@ -434,9 +468,126 @@
       display: block;
     }
 
+    /* Calendar Responsive */
+    @media (max-width: 1200px) {
+      .calendar-container {
+        flex-direction: column;
+        gap: 30px;
+      }
+      
+      .calendar {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      
+      .event-list {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+    }
+    
     @media (max-width: 900px) {
       .calendar-container {
         flex-direction: column;
+        gap: 25px;
+      }
+      
+      .calendar {
+        width: 100%;
+        max-width: 500px;
+      }
+      
+      .event-list {
+        width: 100%;
+        max-width: 450px;
+      }
+      
+      .calendar-header h2 {
+        font-size: 1.8rem;
+      }
+      
+      .calendar-header p {
+        font-size: 0.95rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .calendar {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+      }
+      
+      .event-list {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+      }
+      
+      .calendar-header h2 {
+        font-size: 1.6rem;
+      }
+      
+      .calendar-header p {
+        font-size: 0.9rem;
+      }
+      
+      .event-item {
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      
+      .event-item h3 {
+        font-size: 1.1rem;
+      }
+      
+      .event-item p {
+        font-size: 0.9rem;
+      }
+      
+      .event-date {
+        font-size: 0.85rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .calendar {
+        width: 100%;
+        max-width: 350px;
+        padding: 15px;
+      }
+      
+      .event-list {
+        width: 100%;
+        max-width: 350px;
+        padding: 15px;
+      }
+      
+      .calendar-header h2 {
+        font-size: 1.4rem;
+      }
+      
+      .calendar-header p {
+        font-size: 0.85rem;
+      }
+      
+      .event-item {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .event-item h3 {
+        font-size: 1rem;
+      }
+      
+      .event-item p {
+        font-size: 0.85rem;
+      }
+      
+      .event-date {
+        font-size: 0.8rem;
       }
     }
 
@@ -606,35 +757,61 @@
     }
     
     /* Mobile Responsiveness */
-    @media (max-width: 768px) {
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        padding: 40px 20px 30px;
+    @media (max-width: 768px) { 
+      .footer-content { 
+        grid-template-columns: 1fr; 
+        gap: 40px; 
+        padding: 40px 20px 30px; 
+      } 
+      .footer-links { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 30px; 
+      } 
+      .footer-main h3 { 
+        font-size: 1.8rem; 
+      } 
+      .social-links { 
+        justify-content: center; 
       }
       
-      .footer-links {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
+      .footer-main p {
+        font-size: 0.9rem;
+        line-height: 1.6;
       }
       
-      .footer-main h3 {
-        font-size: 1.8rem;
+      .footer-links h4 {
+        font-size: 1.1rem;
       }
       
-      .social-links {
-        justify-content: center;
+      .footer-links a {
+        font-size: 0.9rem;
       }
-    }
-    
-    @media (max-width: 480px) {
-      .footer-links {
-        grid-template-columns: 1fr;
-        gap: 25px;
+    } 
+    @media (max-width: 480px) { 
+      .footer-links { 
+        grid-template-columns: 1fr; 
+        gap: 25px; 
+      } 
+      .footer-main h3 { 
+        font-size: 1.6rem; 
       }
       
-      .footer-main h3 {
-        font-size: 1.6rem;
+      .footer-main p {
+        font-size: 0.85rem;
+      }
+      
+      .footer-links h4 {
+        font-size: 1rem;
+      }
+      
+      .footer-links a {
+        font-size: 0.85rem;
+      }
+      
+      .social-links a {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
       }
     }
   </style>
