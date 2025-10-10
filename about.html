@@ -198,58 +198,167 @@
       transform: translateY(-1px);
     }
 
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .hamburger:hover {
+      background: rgba(249, 178, 51, 0.2);
+    }
+    
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      margin: 3px 0;
+      transition: 0.3s;
+      border-radius: 2px;
+    }
+    
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
     /* Mobile responsiveness */
     @media (max-width: 768px) {
-      .nav-menu {
-        gap: 20px;
+      .hamburger {
+        display: flex;
+        order: 2;
       }
       
       .nav-container {
-        padding: 15px 20px;
+        padding: 10px 15px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
       }
       
       .navbar-logo {
-        height: 40px;
+        height: 35px;
+        order: 1;
+      }
+      
+      .nav-menu {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(11, 19, 32, 0.98);
+        backdrop-filter: blur(15px);
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 999;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
       }
       
       .nav-menu a {
-        font-size: 0.9rem;
-        padding: 8px 12px;
+        font-size: 1rem;
+        padding: 12px 20px;
+        width: 100%;
+        text-align: center;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .nav-menu a:hover {
+        background: rgba(249, 178, 51, 0.2);
+        transform: scale(1.02);
+        border-color: rgba(249, 178, 51, 0.3);
       }
       
       .social-container {
         padding: 0 15px;
+        order: 3;
+        justify-content: center;
+        margin-top: 10px;
       }
       
       .follow-text {
         font-size: 0.8rem;
+        margin-right: 10px;
+      }
+      
+      .social-icons {
+        gap: 15px;
       }
       
       .social-icons a {
-        width: 28px;
-        height: 28px;
-        font-size: 0.8rem;
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .social-icons a:hover {
+        background: rgba(249, 178, 51, 0.2);
+        transform: scale(1.1);
+      }
+      
+      /* Reduce navbar height on mobile */
+      body {
+        padding-top: 80px;
       }
     }
     
     @media (max-width: 480px) {
       .nav-menu {
-        gap: 15px;
+        gap: 10px;
+        flex-wrap: wrap;
       }
       
       .nav-menu a {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         padding: 6px 10px;
+        min-width: 50px;
       }
       
       .navbar-logo {
-        height: 35px;
+        height: 30px;
       }
       
       .social-icons a {
-        width: 25px;
-        height: 25px;
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+      }
+      
+      .follow-text {
         font-size: 0.75rem;
+      }
+      
+      /* Further reduce navbar height on small mobile */
+      body {
+        padding-top: 110px;
       }
     }
 
@@ -699,7 +808,14 @@
         BIG Consultants
       </a>
       
-      <ul class="nav-menu">
+      <!-- Hamburger Menu -->
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      
+      <ul class="nav-menu" id="navMenu">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html" style="color: #f9b233;">About</a></li>
         <li class="projects">
@@ -837,6 +953,42 @@
       </div>
     </div>
   </footer>
+  
+  <script>
+    // ==============================
+    // HAMBURGER MENU FUNCTIONALITY
+    // ==============================
+    function toggleMenu() {
+      const navMenu = document.getElementById('navMenu');
+      const hamburger = document.querySelector('.hamburger');
+      
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+    
+    // Close menu when clicking on a link
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        const navMenu = document.getElementById('navMenu');
+        const hamburger = document.querySelector('.hamburger');
+        
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+      });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const navMenu = document.getElementById('navMenu');
+      const hamburger = document.querySelector('.hamburger');
+      const navContainer = document.querySelector('.nav-container');
+      
+      if (!navContainer.contains(e.target)) {
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+      }
+    });
+  </script>
 
 </body>
 </html>

@@ -54,7 +54,69 @@
       .social-icons { display: flex; gap: 15px; align-items: center; }
       .social-icons a { color: #fff; font-size: 0.9rem; transition: all 0.3s ease; padding: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
       .social-icons a:hover { color: #f9b233; background: rgba(249, 178, 51, 0.2); transform: translateY(-2px) scale(1.1); box-shadow: 0 4px 12px rgba(249, 178, 51, 0.3); }
-      @media (max-width: 768px) { .nav-menu { gap: 20px; } .nav-menu a { font-size: 0.9rem; } .social-icons { gap: 10px; } .social-icons a { width: 35px; height: 35px; font-size: 1rem; } }
+      @media (max-width: 768px) { 
+        .nav-menu { 
+          gap: 15px; 
+          flex-wrap: wrap;
+          justify-content: center;
+        } 
+        .nav-menu a { 
+          font-size: 0.85rem; 
+          padding: 8px 12px;
+          min-width: 60px;
+          text-align: center;
+          border-radius: 5px;
+          background: rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+        }
+        .nav-menu a:hover {
+          background: rgba(249, 178, 51, 0.2);
+          transform: scale(1.05);
+        }
+        .social-icons { 
+          gap: 15px; 
+        } 
+        .social-icons a { 
+          width: 35px; 
+          height: 35px; 
+          font-size: 1rem; 
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+        }
+        .social-icons a:hover {
+          background: rgba(249, 178, 51, 0.2);
+          transform: scale(1.1);
+        }
+        /* Reduce navbar height on mobile */
+        body {
+          padding-top: 120px;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .nav-menu {
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        
+        .nav-menu a {
+          font-size: 0.8rem;
+          padding: 6px 10px;
+          min-width: 50px;
+        }
+        
+        .social-icons a {
+          width: 32px;
+          height: 32px;
+          font-size: 0.9rem;
+        }
+        
+        /* Further reduce navbar height on small mobile */
+        body {
+          padding-top: 110px;
+        }
+      }
 
       /* Contact page layout tweaks to sit under site styles */
       .contact-header { background: linear-gradient(135deg, #0b1320 0%, #1a2332 100%); color: #fff; padding: 60px 20px; text-align: center; }
