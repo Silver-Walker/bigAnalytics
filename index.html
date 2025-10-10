@@ -748,7 +748,7 @@
 
     /* Images for mini-cards */
     .mini-oca::before { background-image: url('images/DSC_0194.JPG'); }
-    .mini-strategic::before { background-image: url('images/cash\ n\ plant.jpg'); }
+    .mini-strategic::before { background-image: url('images/cash n plant.jpg'); }
     .mini-rmme::before { background-image: url('images/DSC_0201.JPG'); }
     .mini-external::before { background-image: url('images/DSC_0156.JPG'); }
 
@@ -896,7 +896,6 @@
       display: flex;
       justify-content: center;
     }
-
     .carousel-viewport {
       width: calc(4 * 260px); /* 4 logos * (200px width + 60px gap) */
       overflow: hidden;
@@ -988,12 +987,12 @@
     
     <!-- Main Navigation -->
     <div class="nav-container">
-      <a href="homepage.html" class="logo" style="color:#fff; font-weight:bold; text-decoration:none; font-size:1.2rem;">
+      <a href="index.html" class="logo" style="color:#fff; font-weight:bold; text-decoration:none; font-size:1.2rem;">
         BIG Consultants
       </a>
       
       <ul class="nav-menu">
-        <li><a href="homepage.html" style="color: #f9b233;">Home</a></li>
+        <li><a href="index.html" style="color: #f9b233;">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li class="projects">
           <a href="projects.html">Products & Services <i class="fas fa-chevron-down"></i></a>
@@ -1013,8 +1012,8 @@
   <section class="hero">
     <div class="hero-container">
       <!-- Background Slides Only -->
-      <div class="hero-slide active" style="background-image: url('images/Sweet\ Potatoes\ harvest.jpg');"></div>
-      <div class="hero-slide" style="background-image: url('images/community\ meeting.JPG');"></div>
+      <div class="hero-slide active" style="background-image: url('images/Sweet Potatoes harvest.jpg');"></div>
+      <div class="hero-slide" style="background-image: url('images/community meeting.JPG');"></div>
 
       <!-- Static Overlay Content -->
       <div class="hero-content">
@@ -1128,7 +1127,6 @@
           <img src="images/maisha project.png" alt="Maisha Project">
           <img src="images/InsightSphere.jpeg" alt="Insightsphere">
 
-
           <!-- Duplicate set for seamless infinite scroll -->
           <img src="images/Strategic Connections.png" alt="Strategic Connections">
           <img src="images/ads western.png" alt="ADS Western">
@@ -1143,7 +1141,6 @@
           <img src="images/maisha project.png" alt="Maisha Project">
           <img src="images/InsightSphere.jpeg" alt="Insightsphere">
 
-
           <!-- Additional duplicates for smooth infinite scroll -->
           <img src="images/Strategic Connections.png" alt="Strategic Connections">
           <img src="images/ads western.png" alt="ADS Western">
@@ -1151,7 +1148,6 @@
           <img src="images/ads nyanza white bg.png" alt="ADS Nyanza">
           <img src="images/maisha project.png" alt="Maisha Project">
           <img src="images/InsightSphere.jpeg" alt="Insightsphere">
-
         </div>
       </div>
     </div>
@@ -1247,11 +1243,7 @@
     // ==============================
     // INTERSECTION OBSERVER FOR ANIMATIONS
     // ==============================
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1274,32 +1266,26 @@
     // ==============================
     const counters = document.querySelectorAll('.counter');
     let counterStarted = false; // prevent repeat runs
-
-    // Adjust speed here: larger = slower
     const counterSpeed = 1500; 
 
     const startCounters = () => {
       counters.forEach(counter => {
         counter.innerText = '0';
-
         const updateCounter = () => {
-          const target = +counter.getAttribute('data-target'); // final number
+          const target = +counter.getAttribute('data-target');
           const current = +counter.innerText;
           const increment = target / counterSpeed;
-
           if (current < target) {
             counter.innerText = `${Math.ceil(current + increment)}`;
-            setTimeout(updateCounter, 20); // adjust refresh interval
+            setTimeout(updateCounter, 20);
           } else {
-            counter.innerText = target; // ensure final value
+            counter.innerText = target;
           }
         };
-
         updateCounter();
       });
     };
 
-    // Trigger when partnerships section is visible
     const partnershipsSection = document.querySelector('.partnerships');
     const counterObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -1308,8 +1294,7 @@
           counterStarted = true;
         }
       });
-    }, { threshold: 0.5 }); // triggers when 50% visible
-
+    }, { threshold: 0.5 });
     counterObserver.observe(partnershipsSection);
 
     // ==============================
@@ -1325,31 +1310,20 @@
     function slideToNext() {
       currentPosition += slideWidth;
       carouselTrack.style.transform = `translateX(-${currentPosition}px)`;
-      
-      // Reset position when we've scrolled through all original logos
-      // This creates the seamless infinite effect
       if (currentPosition >= originalLogosCount * slideWidth) {
         setTimeout(() => {
           currentPosition = 0;
           carouselTrack.style.transition = 'none';
           carouselTrack.style.transform = `translateX(-${currentPosition}px)`;
-          // Re-enable transition after reset
-          setTimeout(() => {
-            carouselTrack.style.transition = 'transform 1s ease-in-out';
-          }, 50);
-        }, 1000); // Wait for transition to complete
+          setTimeout(() => { carouselTrack.style.transition = 'transform 1s ease-in-out'; }, 50);
+        }, 1000);
       }
     }
 
-    // Start the carousel after page loads
     window.addEventListener('load', () => {
-      // Initial delay before starting
       setTimeout(() => {
-        // Auto-slide every 3 seconds (2 seconds pause + 1 second transition)
-        setInterval(() => {
-          slideToNext();
-        }, 3000);
-      }, 2000); // Wait 2 seconds before starting
+        setInterval(() => { slideToNext(); }, 3000);
+      }, 2000);
     });
   </script>
   
@@ -1362,20 +1336,9 @@
     .footer-main h3::after { content:''; position:absolute; bottom:-8px; left:0; width:50px; height:3px; background:linear-gradient(90deg, #f9b233, #ff6b35); border-radius:2px; }
     
     /* Footer logo styling */
-    .footer-logo {
-      margin-bottom: 20px;
-    }
-    
-    .footer-logo-img {
-      height: 250px; /* Adjustable height - change this value to resize */
-      width: auto;
-      object-fit: contain;
-      transition: all 0.3s ease;
-    }
-    
-    .footer-logo-img:hover {
-      transform: scale(1.05);
-    }
+    .footer-logo { margin-bottom: 20px; }
+    .footer-logo-img { height: 250px; width: auto; object-fit: contain; transition: all 0.3s ease; }
+    .footer-logo-img:hover { transform: scale(1.05); }
     .footer-main p { color:#cbd5e0; line-height:1.6; font-size:1rem; }
     .footer-links { display:grid; grid-template-columns:repeat(4, 1fr); gap:30px; }
     .footer-section h4 { color:#f9b233; font-size:1.1rem; font-weight:600; margin-bottom:20px; letter-spacing:0.5px; }
@@ -1408,7 +1371,7 @@
         <div class="footer-section">
           <h4>Quick Links</h4>
           <ul>
-            <li><a href="homepage.html">Home</a></li>
+            <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="projects.html">Services</a></li>
             <li><a href="eventscalendar.html">Events</a></li>
@@ -1454,3 +1417,5 @@
 
 </body>
 </html>
+
+
