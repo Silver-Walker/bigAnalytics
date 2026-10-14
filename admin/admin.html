@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - BIG Analytica</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0b1320 0%, #1a2332 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .admin-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .admin-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .admin-header h1 {
+      color: #f9b233;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .admin-header p {
+      color: #cbd5e0;
+      font-size: 1.1rem;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      color: #f9b233;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .form-group input {
+      padding: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #f9b233;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(249, 178, 51, 0.3);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #f9b233, #ff6b35);
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(249, 178, 51, 0.4);
+    }
+
+    .cms-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(249, 178, 51, 0.1);
+      border: 1px solid rgba(249, 178, 51, 0.3);
+      border-radius: 10px;
+      color: #f9b233;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .cms-link.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .cms-link:hover {
+      background: rgba(249, 178, 51, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .error-message.visible {
+      opacity: 1;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #f9b233;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #fff;
+      transform: translateX(-5px);
+    }
+
+    @media (max-width: 768px) {
+      .admin-container {
+        padding: 30px 20px;
+        margin: 20px;
+      }
+
+      .admin-header h1 {
+        font-size: 2rem;
+      }
+
+      .back-link {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="../index.html" class="back-link">
+    <i class="fas fa-arrow-left"></i> Back to Website
+  </a>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Admin Panel</h1>
+      <p>Manage your website content</p>
+    </div>
+
+    <form class="login-form" id="loginForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <button type="submit" class="login-btn">Login to CMS</button>
+      
+      <div class="error-message" id="errorMessage">
+        Invalid username or password. Please try again.
+      </div>
+    </form>
+
+    <a href="cms.html" class="cms-link" id="cmsLink" style="display: none;">
+      <i class="fas fa-cog"></i> Open Content Management System
+    </a>
+  </div>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script>
+    // Simple authentication without server (for demo purposes)
+    // In production, use proper server-side authentication
+    const ADMIN_CREDENTIALS = {
+      username: 'admin',
+      password: 'biganalytica2025'
+    };
+
+    const loginForm = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+    const cmsLink = document.getElementById('cmsLink');
+
+    // Check if user is already authenticated
+    function checkAuth() {
+      const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+      if (isLoggedIn) {
+        cmsLink.style.display = 'block';
+        cmsLink.classList.add('visible');
+        addLogoutButton();
+        return true;
+      }
+      return false;
+    }
+
+    // Simple login function (client-side only)
+    function login(username, password) {
+      if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+        // Successful login
+        errorMessage.classList.remove('visible');
+        cmsLink.style.display = 'block';
+        cmsLink.classList.add('visible');
+        
+        // Store login state
+        localStorage.setItem('adminLoggedIn', 'true');
+        localStorage.setItem('adminUser', JSON.stringify({
+          username: username,
+          role: 'admin',
+          loginTime: new Date().toISOString()
+        }));
+        
+        // Add logout button
+        addLogoutButton();
+        
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+          window.location.href = 'simple-dashboard.html';
+        }, 1000);
+        
+        return true;
+      } else {
+        // Failed login
+        errorMessage.textContent = 'Invalid username or password. Please try again.';
+        errorMessage.classList.add('visible');
+        cmsLink.style.display = 'none';
+        cmsLink.classList.remove('visible');
+        return false;
+      }
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('adminLoggedIn');
+      localStorage.removeItem('adminUser');
+      cmsLink.style.display = 'none';
+      cmsLink.classList.remove('visible');
+      
+      // Remove logout button if it exists
+      const logoutBtn = document.querySelector('.logout-btn');
+      if (logoutBtn) {
+        logoutBtn.remove();
+      }
+    }
+
+    // Add logout button
+    function addLogoutButton() {
+      // Remove existing logout button if any
+      const existingBtn = document.querySelector('.logout-btn');
+      if (existingBtn) {
+        existingBtn.remove();
+      }
+
+      const logoutBtn = document.createElement('button');
+      logoutBtn.textContent = 'Logout';
+      logoutBtn.className = 'login-btn logout-btn';
+      logoutBtn.style.marginTop = '10px';
+      logoutBtn.style.background = 'linear-gradient(135deg, #dc2626, #b91c1c)';
+      logoutBtn.addEventListener('click', logout);
+      
+      const form = document.querySelector('.login-form');
+      form.appendChild(logoutBtn);
+    }
+
+    // Event listeners
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        errorMessage.textContent = 'Please enter both username and password.';
+        errorMessage.classList.add('visible');
+        return;
+      }
+
+      login(username, password);
+    });
+
+    // Clear login state when going back to main site
+    document.querySelector('.back-link').addEventListener('click', function() {
+      logout();
+    });
+
+    // Initialize authentication check
+    document.addEventListener('DOMContentLoaded', function() {
+      checkAuth();
+    });
+
+    // Add logout functionality to CMS link
+    cmsLink.addEventListener('click', function(e) {
+      // If user clicks the link, let it proceed normally
+      // The logout will happen when they navigate away
+    });
+  </script>
+</body>
+</html>
+

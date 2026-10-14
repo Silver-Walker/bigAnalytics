@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - BIG Analytica</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0b1320 0%, #1a2332 100%);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      border: 1px solid rgba(249, 178, 51, 0.3);
+    }
+
+    .header h1 {
+      color: #f9b233;
+      font-size: 2.5rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info span {
+      color: #cbd5e0;
+    }
+
+    .logout-btn {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .content-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .content-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .content-card h3 {
+      color: #f9b233;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .content-card p {
+      color: #cbd5e0;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f9b233, #ff6b35);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(249, 178, 51, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .message.success {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .message.info {
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #f9b233;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #fff;
+      transform: translateX(-5px);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .back-link {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="../index.html" class="back-link">
+    <i class="fas fa-arrow-left"></i> Back to Website
+  </a>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>Admin Dashboard</h1>
+      <div class="user-info">
+        <span id="userInfo">Welcome, Admin</span>
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- Message Container -->
+    <div id="messageContainer"></div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+      <!-- Homepage Management -->
+      <div class="content-card">
+        <h3><i class="fas fa-home"></i> Homepage Management</h3>
+        <p>Edit hero content, headlines, background images, and main page content.</p>
+        <button class="btn btn-primary" onclick="showMessage('Homepage management coming soon!', 'info')">
+          Manage Homepage
+        </button>
+      </div>
+
+      <!-- Strategic Areas -->
+      <div class="content-card">
+        <h3><i class="fas fa-bullseye"></i> Strategic Areas</h3>
+        <p>Manage strategic areas, descriptions, icons, and background images.</p>
+        <button class="btn btn-primary" onclick="showMessage('Strategic areas management coming soon!', 'info')">
+          Manage Strategic Areas
+        </button>
+      </div>
+
+      <!-- Strategy Development -->
+      <div class="content-card">
+        <h3><i class="fas fa-project-diagram"></i> Strategy Development</h3>
+        <p>Edit strategy development items, OCA's, strategic plans, and more.</p>
+        <button class="btn btn-primary" onclick="showMessage('Strategy development management coming soon!', 'info')">
+          Manage Strategy Development
+        </button>
+      </div>
+
+      <!-- Partnerships -->
+      <div class="content-card">
+        <h3><i class="fas fa-handshake"></i> Partnerships</h3>
+        <p>Update partnership counters, descriptions, and partner logos.</p>
+        <button class="btn btn-primary" onclick="showMessage('Partnerships management coming soon!', 'info')">
+          Manage Partnerships
+        </button>
+      </div>
+
+      <!-- Site Settings -->
+      <div class="content-card">
+        <h3><i class="fas fa-cog"></i> Site Settings</h3>
+        <p>Configure site title, contact information, and social media links.</p>
+        <button class="btn btn-primary" onclick="showMessage('Site settings management coming soon!', 'info')">
+          Manage Site Settings
+        </button>
+      </div>
+
+      <!-- User Management -->
+      <div class="content-card">
+        <h3><i class="fas fa-users"></i> User Management</h3>
+        <p>Create and manage admin users, roles, and permissions.</p>
+        <button class="btn btn-primary" onclick="showMessage('User management coming soon!', 'info')">
+          Manage Users
+        </button>
+      </div>
+
+      <!-- Content Management System -->
+      <div class="content-card">
+        <h3><i class="fas fa-edit"></i> Content Management</h3>
+        <p>Access the full CMS interface for advanced content editing.</p>
+        <a href="cms.html" class="btn btn-secondary">
+          Open CMS
+        </a>
+      </div>
+
+      <!-- Blog Management -->
+      <div class="content-card">
+        <h3><i class="fas fa-blog"></i> Blog Management</h3>
+        <p>Create and manage blog posts, articles, and news content.</p>
+        <button class="btn btn-primary" onclick="showMessage('Blog management coming soon!', 'info')">
+          Manage Blog
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script>
+    // Check authentication on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+      const userInfo = localStorage.getItem('adminUser');
+      
+      if (!isLoggedIn || !userInfo) {
+        // Redirect to login page if not authenticated
+        window.location.href = 'admin.html';
+        return;
+      }
+
+      // Display user information
+      const user = JSON.parse(userInfo);
+      document.getElementById('userInfo').textContent = `Welcome, ${user.username}`;
+    });
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('adminLoggedIn');
+      localStorage.removeItem('adminUser');
+      window.location.href = 'admin.html';
+    }
+
+    // Show message function
+    function showMessage(message, type = 'info') {
+      const container = document.getElementById('messageContainer');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.textContent = message;
+      
+      container.innerHTML = '';
+      container.appendChild(messageDiv);
+      
+      setTimeout(() => {
+        messageDiv.remove();
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

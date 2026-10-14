@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create New User - BIG Analytica</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0b1320 0%, #1a2332 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 600px;
+      width: 90%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      color: #f9b233;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #cbd5e0;
+      font-size: 1.1rem;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #f9b233;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #f9b233;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(249, 178, 51, 0.3);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f9b233, #ff6b35);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(249, 178, 51, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .message.success {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .message.error {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .message.info {
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #cbd5e0;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #f9b233;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #fff;
+      transform: translateX(-5px);
+    }
+
+    .password-strength {
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+
+    .strength-weak { color: #ef4444; }
+    .strength-medium { color: #f59e0b; }
+    .strength-strong { color: #22c55e; }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 20px;
+        margin: 20px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .back-link {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="dashboard.html" class="back-link">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+  </a>
+
+  <div class="container">
+    <div class="header">
+      <h1>Create New User</h1>
+      <p>Add a new user to the system</p>
+    </div>
+
+    <div id="messageContainer"></div>
+
+    <form id="createUserForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="username">Username *</label>
+          <input type="text" id="username" name="username" placeholder="Enter username" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" placeholder="Enter email address" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input type="password" id="password" name="password" placeholder="Enter password" required oninput="checkPasswordStrength()">
+          <div id="passwordStrength" class="password-strength"></div>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password *</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required oninput="checkPasswordMatch()">
+          <div id="passwordMatch" class="password-strength"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="role">User Role *</label>
+        <select id="role" name="role" required>
+          <option value="">Select a role</option>
+          <option value="admin">Admin - Full access to all features</option>
+          <option value="editor">Editor - Content management only</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+        <button type="submit" class="btn btn-primary">Create User</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script>
+    // Global variables
+    const API_BASE_URL = window.location.origin + '/api';
+    let authToken = null;
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Check authentication
+      const isAuthenticated = await checkAuth();
+      if (!isAuthenticated) {
+        window.location.href = 'admin.html';
+        return;
+      }
+
+      // Set up form event listeners
+      setupFormListeners();
+    });
+
+    // Authentication check
+    async function checkAuth() {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        return false;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/verify`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.user.role !== 'admin') {
+            showMessage('Admin access required', 'error');
+            window.location.href = 'admin.html';
+            return false;
+          }
+          authToken = token;
+          return true;
+        } else {
+          localStorage.removeItem('authToken');
+          return false;
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        return false;
+      }
+    }
+
+    // Form setup
+    function setupFormListeners() {
+      document.getElementById('createUserForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        await createUser();
+      });
+    }
+
+    // Create user function
+    async function createUser() {
+      const formData = new FormData(document.getElementById('createUserForm'));
+      const userData = {
+        username: formData.get('username').trim(),
+        email: formData.get('email').trim(),
+        password: formData.get('password'),
+        role: formData.get('role')
+      };
+
+      // Validate form data
+      if (!validateUserData(userData)) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/users`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify(userData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          showMessage('User created successfully!', 'success');
+          // Reset form after successful creation
+          setTimeout(() => {
+            resetForm();
+          }, 2000);
+        } else {
+          showMessage(data.error || 'Failed to create user', 'error');
+        }
+      } catch (error) {
+        console.error('Error creating user:', error);
+        showMessage('Error creating user. Please try again.', 'error');
+      }
+    }
+
+    // Validate user data
+    function validateUserData(userData) {
+      // Check if all required fields are filled
+      if (!userData.username || !userData.email || !userData.password || !userData.role) {
+        showMessage('Please fill in all required fields', 'error');
+        return false;
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(userData.email)) {
+        showMessage('Please enter a valid email address', 'error');
+        return false;
+      }
+
+      // Validate password strength
+      if (userData.password.length < 8) {
+        showMessage('Password must be at least 8 characters long', 'error');
+        return false;
+      }
+
+      // Check password match
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      if (userData.password !== confirmPassword) {
+        showMessage('Passwords do not match', 'error');
+        return false;
+      }
+
+      return true;
+    }
+
+    // Password strength checker
+    function checkPasswordStrength() {
+      const password = document.getElementById('password').value;
+      const strengthDiv = document.getElementById('passwordStrength');
+      
+      if (password.length === 0) {
+        strengthDiv.textContent = '';
+        return;
+      }
+
+      let strength = 0;
+      let strengthText = '';
+      let strengthClass = '';
+
+      // Check length
+      if (password.length >= 8) strength++;
+      if (password.length >= 12) strength++;
+
+      // Check for uppercase
+      if (/[A-Z]/.test(password)) strength++;
+
+      // Check for lowercase
+      if (/[a-z]/.test(password)) strength++;
+
+      // Check for numbers
+      if (/\d/.test(password)) strength++;
+
+      // Check for special characters
+      if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
+
+      if (strength < 3) {
+        strengthText = 'Weak password';
+        strengthClass = 'strength-weak';
+      } else if (strength < 5) {
+        strengthText = 'Medium strength password';
+        strengthClass = 'strength-medium';
+      } else {
+        strengthText = 'Strong password';
+        strengthClass = 'strength-strong';
+      }
+
+      strengthDiv.textContent = strengthText;
+      strengthDiv.className = `password-strength ${strengthClass}`;
+    }
+
+    // Password match checker
+    function checkPasswordMatch() {
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const matchDiv = document.getElementById('passwordMatch');
+      
+      if (confirmPassword.length === 0) {
+        matchDiv.textContent = '';
+        return;
+      }
+
+      if (password === confirmPassword) {
+        matchDiv.textContent = 'Passwords match';
+        matchDiv.className = 'password-strength strength-strong';
+      } else {
+        matchDiv.textContent = 'Passwords do not match';
+        matchDiv.className = 'password-strength strength-weak';
+      }
+    }
+
+    // Reset form
+    function resetForm() {
+      document.getElementById('createUserForm').reset();
+      document.getElementById('passwordStrength').textContent = '';
+      document.getElementById('passwordMatch').textContent = '';
+    }
+
+    // Show message
+    function showMessage(message, type = 'info') {
+      const container = document.getElementById('messageContainer');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.textContent = message;
+      
+      container.innerHTML = '';
+      container.appendChild(messageDiv);
+      
+      setTimeout(() => {
+        messageDiv.remove();
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
+

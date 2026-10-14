@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Management System - BIG Analytica</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0b1320 0%, #1a2332 100%);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      border: 1px solid rgba(249, 178, 51, 0.3);
+    }
+
+    .header h1 {
+      color: #f9b233;
+      font-size: 2.5rem;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px;
+      border-radius: 15px;
+    }
+
+    .nav-tab {
+      padding: 15px 25px;
+      background: transparent;
+      border: none;
+      color: #cbd5e0;
+      cursor: pointer;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .nav-tab.active {
+      background: linear-gradient(135deg, #f9b233, #ff6b35);
+      color: #0b1320;
+    }
+
+    .nav-tab:hover:not(.active) {
+      background: rgba(249, 178, 51, 0.2);
+      color: #f9b233;
+    }
+
+    .content-section {
+      display: none;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #f9b233;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #f9b233;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(249, 178, 51, 0.3);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f9b233, #ff6b35);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(249, 178, 51, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      margin-top: 30px;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .message.success {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .message.info {
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #f9b233;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #fff;
+      transform: translateX(-5px);
+    }
+
+    .content-preview {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .content-preview h4 {
+      color: #f9b233;
+      margin-bottom: 10px;
+    }
+
+    .content-preview p {
+      color: #cbd5e0;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+
+      .nav-tabs {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .back-link {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="simple-dashboard.html" class="back-link">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+  </a>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>Content Management System</h1>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showSection('homepage')">Homepage</button>
+      <button class="nav-tab" onclick="showSection('strategic-areas')">Strategic Areas</button>
+      <button class="nav-tab" onclick="showSection('partnerships')">Partnerships</button>
+      <button class="nav-tab" onclick="showSection('site-settings')">Site Settings</button>
+    </div>
+
+    <!-- Message Container -->
+    <div id="messageContainer"></div>
+
+    <!-- Homepage Content Section -->
+    <div id="homepage" class="content-section active">
+      <h2>Homepage Content</h2>
+      <form id="homepageForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="heroHeadline">Hero Headline</label>
+            <input type="text" id="heroHeadline" name="heroHeadline" placeholder="Enter hero headline" value="Extensive Field Force">
+          </div>
+          <div class="form-group">
+            <label for="heroSubheadline">Hero Subheadline</label>
+            <input type="text" id="heroSubheadline" name="heroSubheadline" placeholder="Enter hero subheadline" value="Rich Ecosystem Database">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="platformTitle">Platform Section Title</label>
+          <input type="text" id="platformTitle" name="platformTitle" placeholder="Enter platform section title" value="Strategic Areas">
+        </div>
+
+        <div class="form-group">
+          <label for="strategyTitle">Strategy Section Title</label>
+          <input type="text" id="strategyTitle" name="strategyTitle" placeholder="Enter strategy section title" value="Strategy Development">
+        </div>
+
+        <div class="form-group">
+          <label for="partnershipsTitle">Partnerships Section Title</label>
+          <input type="text" id="partnershipsTitle" name="partnershipsTitle" placeholder="Enter partnerships section title" value="Our Partnerships">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="resetForm('homepageForm')">Reset</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+
+      <div class="content-preview">
+        <h4>Preview</h4>
+        <p><strong>Hero Headline:</strong> <span id="heroHeadlinePreview">Extensive Field Force</span></p>
+        <p><strong>Platform Title:</strong> <span id="platformTitlePreview">Strategic Areas</span></p>
+        <p><strong>Strategy Title:</strong> <span id="strategyTitlePreview">Strategy Development</span></p>
+        <p><strong>Partnerships Title:</strong> <span id="partnershipsTitlePreview">Our Partnerships</span></p>
+      </div>
+    </div>
+
+    <!-- Strategic Areas Section -->
+    <div id="strategic-areas" class="content-section">
+      <h2>Strategic Areas Management</h2>
+      <div class="message info">
+        <i class="fas fa-info-circle"></i> Strategic areas management interface coming soon. This will allow you to edit titles, descriptions, icons, and background images for each strategic area.
+      </div>
+    </div>
+
+    <!-- Partnerships Section -->
+    <div id="partnerships" class="content-section">
+      <h2>Partnerships Management</h2>
+      <div class="message info">
+        <i class="fas fa-info-circle"></i> Partnerships management interface coming soon. This will allow you to update counter numbers, descriptions, and partner logos.
+      </div>
+    </div>
+
+    <!-- Site Settings Section -->
+    <div id="site-settings" class="content-section">
+      <h2>Site Settings</h2>
+      <form id="siteSettingsForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="siteTitle">Site Title</label>
+            <input type="text" id="siteTitle" name="siteTitle" placeholder="Enter site title" value="BIG Analytica">
+          </div>
+          <div class="form-group">
+            <label for="contactPhone">Contact Phone</label>
+            <input type="text" id="contactPhone" name="contactPhone" placeholder="Enter contact phone" value="+254 722 323271">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contactEmail">Contact Email</label>
+            <input type="email" id="contactEmail" name="contactEmail" placeholder="Enter contact email" value="bigmfi@yahoo.com">
+          </div>
+          <div class="form-group">
+            <label for="contactAddress">Contact Address</label>
+            <input type="text" id="contactAddress" name="contactAddress" placeholder="Enter contact address" value="Kisumu, Kenya">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="siteDescription">Site Description</label>
+          <textarea id="siteDescription" name="siteDescription" placeholder="Enter site description">Tailored Strategies, Stronger Governance, Better Lives.</textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="resetForm('siteSettingsForm')">Reset</button>
+          <button type="submit" class="btn btn-primary">Save Settings</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script>
+    // Check authentication on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+      const userInfo = localStorage.getItem('adminUser');
+      
+      if (!isLoggedIn || !userInfo) {
+        // Redirect to login page if not authenticated
+        window.location.href = 'admin.html';
+        return;
+      }
+
+      // Set up form event listeners
+      setupFormListeners();
+    });
+
+    // Navigation functions
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+
+      // Remove active class from all tabs
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Show selected section
+      document.getElementById(sectionId).classList.add('active');
+
+      // Add active class to clicked tab
+      event.target.classList.add('active');
+    }
+
+    // Form setup
+    function setupFormListeners() {
+      // Homepage form
+      document.getElementById('homepageForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Update preview
+        updateHomepagePreview(data);
+        
+        showMessage('Homepage content saved successfully!', 'success');
+      });
+
+      // Site settings form
+      document.getElementById('siteSettingsForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        showMessage('Site settings saved successfully!', 'success');
+      });
+
+      // Real-time preview updates
+      document.getElementById('heroHeadline').addEventListener('input', function() {
+        document.getElementById('heroHeadlinePreview').textContent = this.value;
+      });
+
+      document.getElementById('platformTitle').addEventListener('input', function() {
+        document.getElementById('platformTitlePreview').textContent = this.value;
+      });
+
+      document.getElementById('strategyTitle').addEventListener('input', function() {
+        document.getElementById('strategyTitlePreview').textContent = this.value;
+      });
+
+      document.getElementById('partnershipsTitle').addEventListener('input', function() {
+        document.getElementById('partnershipsTitlePreview').textContent = this.value;
+      });
+    }
+
+    // Update homepage preview
+    function updateHomepagePreview(data) {
+      document.getElementById('heroHeadlinePreview').textContent = data.heroHeadline;
+      document.getElementById('platformTitlePreview').textContent = data.platformTitle;
+      document.getElementById('strategyTitlePreview').textContent = data.strategyTitle;
+      document.getElementById('partnershipsTitlePreview').textContent = data.partnershipsTitle;
+    }
+
+    // Reset form
+    function resetForm(formId) {
+      document.getElementById(formId).reset();
+      
+      // Reset preview for homepage form
+      if (formId === 'homepageForm') {
+        document.getElementById('heroHeadlinePreview').textContent = 'Extensive Field Force';
+        document.getElementById('platformTitlePreview').textContent = 'Strategic Areas';
+        document.getElementById('strategyTitlePreview').textContent = 'Strategy Development';
+        document.getElementById('partnershipsTitlePreview').textContent = 'Our Partnerships';
+      }
+    }
+
+    // Show message
+    function showMessage(message, type = 'info') {
+      const container = document.getElementById('messageContainer');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.textContent = message;
+      
+      container.innerHTML = '';
+      container.appendChild(messageDiv);
+      
+      setTimeout(() => {
+        messageDiv.remove();
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
+

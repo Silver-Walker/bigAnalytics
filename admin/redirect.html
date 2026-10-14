@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Access - BIG Analytica</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0b1320 0%, #1a2332 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      border: 1px solid rgba(249, 178, 51, 0.3);
+      max-width: 500px;
+    }
+    h1 {
+      color: #f9b233;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+    }
+    p {
+      color: #cbd5e0;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #f9b233, #ff6b35);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin: 10px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(249, 178, 51, 0.4);
+    }
+    .btn-secondary {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+    }
+    .btn-secondary:hover {
+      box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Access</h1>
+    <p>Welcome to the BIG Analytica admin panel. Choose your access method:</p>
+    
+    <a href="../admin.html" class="btn">
+      <i class="fas fa-sign-in-alt"></i> Admin Login
+    </a>
+    
+    <a href="simple-dashboard.html" class="btn btn-secondary">
+      <i class="fas fa-tachometer-alt"></i> Dashboard
+    </a>
+    
+    <a href="../index.html" class="btn btn-secondary">
+      <i class="fas fa-home"></i> Back to Website
+    </a>
+  </div>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</body>
+</html>
+
